@@ -20,6 +20,10 @@ char* CreateBuffer(char* filename){
     fseek(rf, 0, SEEK_SET);
     char* buff = (char*)malloc((flen+1)*sizeof(char));
     assert(buff != NULL);
+    long int freadcounter;
+    for(freadcounter = 0; freadcounter < flen; ) {
+        freadcounter += (long int)fread(buff, sizeof(char), flen, rf);
+    }
     while(fread(buff, sizeof(char), flen, rf) != (size_t)flen){}
     fclose(rf);
     buff[flen] = '\0';
