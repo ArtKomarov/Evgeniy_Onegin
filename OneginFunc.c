@@ -21,10 +21,16 @@ char* CreateBuffer(char* filename){
     char* buff = (char*)malloc((flen+1)*sizeof(char));
     assert(buff != NULL);
     long int freadcounter;
+    char* supbuff = (char*)malloc((flen+1)*sizeof(char));
+    assert(supbuff != NULL);
     for(freadcounter = 0; freadcounter < flen; ) {
-        freadcounter += (long int)fread(buff, sizeof(char), flen, rf);
+        long int i = 0;
+        i = (long int)fread(supbuff, sizeof(char), flen - freadcounter, rf);
+        memcpy((buff + freadcounter), supbuff, i);
+        freadcounter += i;
     }
-    while(fread(buff, sizeof(char), flen, rf) != (size_t)flen){}
+    //while(fread(buff, sizeof(char), flen, rf) != (size_t)flen){}
+    free(supbuff);
     fclose(rf);
     buff[flen] = '\0';
     return buff;
